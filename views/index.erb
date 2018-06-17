@@ -1,0 +1,50 @@
+<style>
+    .progress 
+    {
+        height: 50px;
+    }
+    
+    .progress-bar
+    {
+        font-size: 24px;
+    }
+</style>
+
+<h1 class="display-4 py-3 mb-3 border-bottom">
+    <%= "#{title} (#{@host})" %>
+</h1>
+
+<br>
+<h1><%= @user %></h1>
+<% @paths.each do |path| %>
+    <br>
+    <h2><%= path[:path] %></h2>
+    <br>
+    <h3>File Usage</h3>
+    <br>
+    <% if path[:file_ratio] <= 0.2 %>
+        <p><%= "#{(100*path[:file_ratio]).to_i}% (#{path[:file_usage]}/#{path[:file_limit]})" %></p>
+        <br>
+    <% end %>
+    <div class="progress">
+        <div class="progress-bar <%= color(path[:file_ratio]) %>" role="progressbar" style="width: <%= (100*path[:file_ratio]).to_i %>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            <% if path[:file_ratio] > 0.2 %>
+                <%= "#{(100*path[:file_ratio]).to_i}% (#{path[:file_usage]}/#{path[:file_limit]})" %>
+            <% end %>
+        </div>
+    </div>
+    <br>
+    <h3>Disk Usage</h3>
+    <br>
+    <% if path[:block_ratio] <= 0.2 %>
+        <p><%= "#{(100*path[:block_ratio]).to_i}% (#{path[:block_usage]}/#{path[:block_limit]})" %></p>
+        <br>
+    <% end %>
+    <div class="progress">
+        <div class="progress-bar <%= color(path[:block_ratio]) %>" role="progressbar" style="width: <%= (100*path[:block_ratio]).to_i %>%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            <% if path[:block_ratio] > 0.2 %>
+                <%= "#{(100*path[:block_ratio]).to_i}% (#{path[:block_usage]}/#{path[:block_limit]})" %>
+            <% end %>
+        </div>
+    </div>
+<% end %>
